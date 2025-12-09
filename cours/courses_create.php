@@ -1,8 +1,25 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    print_r($_POST);
-}
 
+<?php
+ include "../infrastructure/config.php";
+
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+?>
+
+<?php
+
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $title = $_POST['title'];
+    $desc = $_POST['description'];
+    $level = $_POST['level'];
+
+    $query = "INSERT INTO courses (title, description, level) 
+              VALUES ('$title', '$desc', '$level')";
+
+        mysqli_query($connection, $query);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
