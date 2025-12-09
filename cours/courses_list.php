@@ -1,3 +1,6 @@
+<?php
+ include "../infrastructure/config.php";
+ ?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -138,41 +141,22 @@
             </thead>
 
             <tbody>
-                <!-- Course 1 -->
+                <!-- Course card manager -->
+                 <?php
+                 $query = "SELECT * FROM courses";
+                 $result = mysqli_query($connection, $query);
+                 while ($row = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                    <td>1</td>
-                    <td>Introduction au Design UX/UI</td>
-                    <td>Débutant</td>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['title']; ?></td>
+                    <td><?php echo $row['level']; ?></td>
                     <td>
                         <button class="btn add-section">+ Section</button>
                         <button class="btn edit-btn">Modifier</button>
                         <button class="btn delete-btn">Supprimer</button>
                     </td>
                 </tr>
-
-                <!-- Course 2 -->
-                <tr>
-                    <td>2</td>
-                    <td>Gestion d’un Cours & Sections</td>
-                    <td>Intermédiaire</td>
-                    <td>
-                        <button class="btn add-section">+ Section</button>
-                        <button class="btn edit-btn">Modifier</button>
-                        <button class="btn delete-btn">Supprimer</button>
-                    </td>
-                </tr>
-
-                <!-- Course 3 -->
-                <tr>
-                    <td>3</td>
-                    <td>Système d’Administration</td>
-                    <td>Avancé</td>
-                    <td>
-                        <button class="btn add-section">+ Section</button>
-                        <button class="btn edit-btn">Modifier</button>
-                        <button class="btn delete-btn">Supprimer</button>
-                    </td>
-                </tr>
+                <?php endwhile; ?>
 
             </tbody>
         </table>
