@@ -1,3 +1,9 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    print_r($_POST);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -104,7 +110,7 @@
 <div class="page-container">
     <h2>Créer un nouveau cours</h2>
 
-    <form>
+    <form method="POST">
         <!-- Title -->
         <div class="form-group">
             <label for="title">Titre du cours</label>
@@ -120,7 +126,7 @@
         <!-- Level -->
         <div class="form-group">
             <label for="level">Niveau</label>
-            <select id="level" required>
+            <select id="level" name="level" required>
                 <option value="">Choisissez un niveau</option>
                 <option value="Débutant">Débutant</option>
                 <option value="Intermédiaire">Intermédiaire</option>

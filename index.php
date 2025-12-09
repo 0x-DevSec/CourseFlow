@@ -1,3 +1,11 @@
+<?php
+    include_once "./infrastructure/config.php";
+?>
+
+<?php
+$query = "SELECT * FROM courses";
+$result = mysqli_query($connection, $query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -304,10 +312,7 @@
                 dédiée aux administrateurs.
             </p>
 
-
-
             <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
-
                 <a href="./cours/courses_create.php" style="padding: 14px 28px; background:white; color:#05328a; border:none; border-radius:10px;
               font-size:1rem; font-weight:bold; cursor:pointer; text-decoration:none; display:inline-block;">
                     Créer un cours
@@ -317,13 +322,7 @@
               font-size:1rem; font-weight:bold; cursor:pointer; text-decoration:none; display:inline-block;">
                     Parcourir les cours
                 </a>
-
             </div>
-
-
-
-
-
 
             <div style="display:flex; justify-content:center; gap:50px; margin-top:40px; font-size:1rem; opacity:0.9;">
                 <div>+10 000 utilisateurs</div>
@@ -340,71 +339,22 @@
                 <button class="search-btn enhanced-search-btn">🔍</button>
             </div>
         </div>
+
+        <div class="courses">
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <div class="course-card enhanced-card">
+                <img src="https://placehold.co/300x150" alt="Course Image" />
+                <div class="course-content">
+                    <div class="course-title"><?= $row['title']; ?></div>
+                    <div class="course-desc"><?= $row['description']; ?></div>
+                    <div class="course-level level-intermediate"><?= $row['level']; ?></div>
+                </div>
+            </div>
+            <?php endwhile; ?>
+        </div>
     </div>
 
-    <div class="courses enhanced-courses">
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Introduction au Design UX/UI</div>
-                <div class="course-desc">Découvrez les bases essentielles du design d'expérience utilisateur et
-                    d'interfaces modernes.</div>
-                <div class="course-level level-beginner">Débutant</div>
-            </div>
-        </div>
-
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Gestion d’un Cours & Sections</div>
-                <div class="course-desc">Apprenez à créer, organiser et maintenir des cours avec plusieurs sections.
-                </div>
-                <div class="course-level level-intermediate">Intermédiaire</div>
-            </div>
-        </div>
-
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Gestion d’un Cours & Sections</div>
-                <div class="course-desc">Apprenez à créer, organiser et maintenir des cours avec plusieurs sections.
-                </div>
-                <div class="course-level level-intermediate">Intermédiaire</div>
-            </div>
-        </div>
-
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Gestion d’un Cours & Sections</div>
-                <div class="course-desc">Apprenez à créer, organiser et maintenir des cours avec plusieurs sections.
-                </div>
-                <div class="course-level level-intermediate">Intermédiaire</div>
-            </div>
-        </div>
-
-
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Gestion d’un Cours & Sections</div>
-                <div class="course-desc">Apprenez à créer, organiser et maintenir des cours avec plusieurs sections.
-                </div>
-                <div class="course-level level-intermediate">Intermédiaire</div>
-            </div>
-        </div>
-
-        <div class="course-card enhanced-card">
-            <img src="https://placehold.co/300x150" alt="Course Image" />
-            <div class="course-content">
-                <div class="course-title">Système d’Administration</div>
-                <div class="course-desc">Maîtrisez les fonctionnalités destinées aux administrateurs pour gérer
-                    efficacement la plateforme.</div>
-                <div class="course-level level-advanced">Avancé</div>
-            </div>
-        </div>
-    </div>
-    </div>
+    <?php include "./infrastructure/footer.php"; ?>
 </body>
 
 </html>
