@@ -151,9 +151,9 @@
                     <td><?php echo $row['title']; ?></td>
                     <td><?php echo $row['level']; ?></td>
                     <td>
-                        <button class="btn add-section">+ Section</button>
-                        <button class="btn edit-btn">Modifier</button>
-                        <button class="btn delete-btn">Supprimer</button>
+                        <a class="btn add-section" href="">+ Section</a>
+                        <a class="btn edit-btn" href="/CourseFlow/cours/courses_edit.php?id=<?php echo $row['id']; ?>">Modifier</a>
+                        <a class="btn delete-btn" href="">Supprimer</a>
                     </td>
                 </tr>
                 <?php endwhile; ?>

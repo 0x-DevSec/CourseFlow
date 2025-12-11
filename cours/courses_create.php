@@ -1,32 +1,59 @@
-
 <?php
- include "../infrastructure/config.php";
+include "../infrastructure/config.php";
 
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
+$title = "";
+$desc = "";
+$level = "";
+$error_message = "";
+$success_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $title = trim($_POST['title']);
+    $desc = trim($_POST['description']);
+    $level = trim($_POST['level']);
+
+    do {
+
+        if (empty($title) || empty($desc) || empty($level)) {
+            $error_message = "Tous les champs sont obligatoires !";
+            break;
+        }
+
+        $query = "INSERT INTO courses (title, description, level)
+                  VALUES ('$title', '$desc', '$level')";
+        $result = mysqli_query($connection, $query);
+
+        if (!$result) {
+            $error_message = "Erreur lors de l'ajout du cours.";
+            break;
+        }
+
+        $success_message = "Cours ajouté avec succès !";
+
+        $title = "";
+        $desc = "";
+        $level = "";
+
+    } while (false);
+}
 ?>
 
-<?php
-
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    $title = $_POST['title'];
-    $desc = $_POST['description'];
-    $level = $_POST['level'];
-
-    $query = "INSERT INTO courses (title, description, level) 
-              VALUES ('$title', '$desc', '$level')";
-
-        mysqli_query($connection, $query);
-    }
-?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Créer un Cours – CourseFlow</title>
+
+    <!-- Add bootstrap for alerts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
     <style>
         body {
             margin: 0;
@@ -50,7 +77,7 @@ if (!$connection) {
             background: #ffffff;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
         }
 
         h2 {
@@ -72,7 +99,9 @@ if (!$connection) {
             margin-bottom: 8px;
         }
 
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 14px;
             border: 1px solid #d0d5dd;
@@ -83,7 +112,9 @@ if (!$connection) {
             transition: 0.3s ease;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus,
+        textarea:focus,
+        select:focus {
             border-color: #4f46e5;
             background: #fff;
         }
@@ -120,43 +151,72 @@ if (!$connection) {
         }
     </style>
 </head>
+
 <body>
 
-<header>CourseFlow</header>
+    <header>CourseFlow</header>
 
-<div class="page-container">
-    <h2>Créer un nouveau cours</h2>
+    <div class="page-container">
+        <h2>Créer un nouveau cours</h2>
 
-    <form method="POST">
-        <!-- Title -->
-        <div class="form-group">
-            <label for="title">Titre du cours</label>
-            <input type="text" name="title" id="title" placeholder="Ex : Introduction au Design UX/UI" required />
-        </div>
+        <!-- ERROR & SUCCESS ALERTS -->
+        <?php
+        if (!empty($error_message)) {
+            echo '
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>' . $error_message . '</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ';
+        }
 
-        <!-- Description -->
-        <div class="form-group">
-            <label for="description">Description du cours</label>
-            <textarea id="description" name="description" placeholder="Décrivez brièvement le contenu et les objectifs du cours..." required></textarea>
-        </div>
+        if (!empty($success_message)) {
+            echo '
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>' . $success_message . '</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ';
+        }
+        ?>
 
-        <!-- Level -->
-        <div class="form-group">
-            <label for="level">Niveau</label>
-            <select id="level" name="level" required>
-                <option value="">Choisissez un niveau</option>
-                <option value="Débutant">Débutant</option>
-                <option value="Intermédiaire">Intermédiaire</option>
-                <option value="Avancé">Avancé</option>
-            </select>
-        </div>
+        <form method="POST">
+            <!-- Title -->
+            <div class="form-group">
+                <label for="title">Titre du cours</label>
+                <input type="text" 
+                       name="title" 
+                       id="title"
+                       value="<?php echo $title; ?>"
+                       placeholder="Ex : Introduction au Design UX/UI"
+                    />
+            </div>
 
-        <!-- Submit Button -->
-        <button type="submit">Créer le Cours</button>
-    </form>
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description du cours</label>
+                <textarea id="description" name="description"><?php echo $desc; ?></textarea>
+            </div>
 
-    <a href="../index.php" class="back-link">⬅ Retour à l'accueil</a>
-</div>
+            <!-- Level -->
+            <div class="form-group">
+                <label for="level">Niveau</label>
+                <select id="level" name="level">
+                    <option value="">Choisissez un niveau</option>
+                    <option value="Débutant" <?php if ($level == "Débutant") echo "selected"; ?>>Débutant</option>
+                    <option value="Intermédiaire" <?php if ($level == "Intermédiaire") echo "selected"; ?>>Intermédiaire</option>
+                    <option value="Avancé" <?php if ($level == "Avancé") echo "selected"; ?>>Avancé</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Créer le Cours</button>
+        </form>
+
+        <a href="../index.php" class="back-link">⬅ Retour à l'accueil</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
