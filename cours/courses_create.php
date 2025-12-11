@@ -39,6 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $desc = "";
         $level = "";
 
+        header("Location: /CourseFlow/");
+        exit;
+
     } while (false);
 }
 ?>

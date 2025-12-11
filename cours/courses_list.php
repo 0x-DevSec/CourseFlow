@@ -74,6 +74,11 @@
         tr:hover {
             background: #f9fafb;
         }
+        a {
+            
+        text-decoration: none !important;
+        }
+
 
         /* Action buttons */
         .btn {
